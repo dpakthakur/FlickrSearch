@@ -8,13 +8,15 @@
 import UIKit
 
 class ViewController: UIViewController {
-    public var searchBarController: UISearchController!
+    var searchBarController: UISearchController!
     let numberOfColumns: CGFloat = Constants.defaultColumnCount
     var viewModel = PhotosViewModel()
     var isFirstTimeActive = true
     let margin: CGFloat = 10
+    var searchHistory = [String]()
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var tablView: UITableView!
     @IBOutlet weak var activityLoader: UIActivityIndicatorView!
     
     override func viewDidLoad() {
@@ -58,6 +60,12 @@ extension ViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        tablView.dataSource = self
+        tablView.delegate = self
+        tablView.tableFooterView = UIView(frame: .zero)
+        
+        tablView.isHidden = true
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         flowLayout.minimumInteritemSpacing = margin
         flowLayout.minimumLineSpacing = margin
@@ -96,19 +104,30 @@ extension ViewController: UISearchControllerDelegate, UISearchBarDelegate {
         self.navigationItem.searchController = searchBarController
     }
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text, text.count > 1 else {
-            return
-        }
+    fileprivate func executeSearch(text: String) {
         activityLoader.isHidden = false
         viewModel.search(text: text) { [self] in
-            print("search completed.")
             self.activityLoader.isHidden = true
             self.collectionView.reloadData()
         }
         searchBarController.searchBar.resignFirstResponder()
     }
     
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if searchHistory.count > 0 {
+            tablView.isHidden = false
+            tablView.reloadData()
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text, text.count > 1 else {
+            return
+        }
+        searchHistory.append(text)
+        tablView.isHidden = true
+        executeSearch(text: text)
+    }
 }
 
 //MARK:- UICollectionViewDataSource
@@ -148,6 +167,24 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
 
         let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(numberOfColumns))
         return CGSize(width: size, height: size)
+    }
+}
+
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tablView.dequeueReusableCell(withIdentifier: "cellSearch", for: indexPath)
+        cell.textLabel?.text = searchHistory[indexPath.row]
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchHistory.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        executeSearch(text: searchHistory[indexPath.row])
+        tablView.isHidden = true
     }
 }
 

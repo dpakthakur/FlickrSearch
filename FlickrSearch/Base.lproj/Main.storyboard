@@ -38,6 +38,20 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8nF-aT-FTw">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cellSearch" id="fOu-2F-VOk">
+                                        <rect key="frame" x="0.0" y="24.5" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fOu-2F-VOk" id="pVA-l3-Szf">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="wqp-Qt-qft">
                                 <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -47,11 +61,15 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="8nF-aT-FTw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="3fY-D1-Sek"/>
                             <constraint firstItem="OIq-ug-QKj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="8EC-Tk-p0r"/>
                             <constraint firstItem="wqp-Qt-qft" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Jsr-m1-EyD"/>
                             <constraint firstItem="OIq-ug-QKj" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="KeK-X7-s3V"/>
+                            <constraint firstItem="8nF-aT-FTw" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="WCa-2Q-Suz"/>
                             <constraint firstItem="OIq-ug-QKj" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="iie-gF-g3s"/>
                             <constraint firstItem="wqp-Qt-qft" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="mR7-dJ-khb"/>
+                            <constraint firstItem="8nF-aT-FTw" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="peb-Pj-aUo"/>
+                            <constraint firstItem="8nF-aT-FTw" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="rRS-me-Grj"/>
                             <constraint firstItem="OIq-ug-QKj" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="s2N-xu-zbu"/>
                         </constraints>
                     </view>
@@ -59,6 +77,7 @@
                     <connections>
                         <outlet property="activityLoader" destination="wqp-Qt-qft" id="Zle-CQ-qpA"/>
                         <outlet property="collectionView" destination="OIq-ug-QKj" id="Ea0-Aj-dJc"/>
+                        <outlet property="tablView" destination="8nF-aT-FTw" id="jrg-LE-qp6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
