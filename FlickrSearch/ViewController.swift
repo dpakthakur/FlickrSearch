@@ -121,13 +121,21 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.nibName, for: indexPath) as! ImageCollectionViewCell
+        cell.imageView.image = nil
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = cell as? ImageCollectionViewCell else {
+            return
+        }
+        
         let model = viewModel.photoArray[indexPath.row]
         cell.model = ImageModel.init(withPhotos: model)
         
         if indexPath.row == (viewModel.photoArray.count - 10) {
             loadNextPage()
         }
-        return cell
     }
 }
 
