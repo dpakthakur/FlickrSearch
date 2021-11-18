@@ -8,11 +8,11 @@
 import UIKit
 
 class ViewController: UIViewController {
-    private var searchBarController: UISearchController!
-    private let numberOfColumns: CGFloat = Constants.defaultColumnCount
-    private var viewModel = PhotosViewModel()
-    private var isFirstTimeActive = true
-    private let margin: CGFloat = 10
+    public var searchBarController: UISearchController!
+    let numberOfColumns: CGFloat = Constants.defaultColumnCount
+    var viewModel = PhotosViewModel()
+    var isFirstTimeActive = true
+    let margin: CGFloat = 10
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var activityLoader: UIActivityIndicatorView!
@@ -29,6 +29,7 @@ class ViewController: UIViewController {
         
         if isFirstTimeActive {
             searchBarController.isActive = true
+            searchBarController.searchBar.becomeFirstResponder()
             isFirstTimeActive = false
         }
     }
@@ -79,21 +80,20 @@ extension ViewController {
     }
     
     private func loadNextPage() {
-        viewModel.fetchNextPage {
-            print("next page fetched")
-        }
+        viewModel.fetchNextPage { }
     }
 }
 
 extension ViewController: UISearchControllerDelegate, UISearchBarDelegate {
     private func createSearchBar() {
         searchBarController = UISearchController(searchResultsController: nil)
-        self.navigationItem.searchController = searchBarController
         searchBarController.delegate = self
-        searchBarController.searchBar.placeholder = "Search Photo category for results"
+        searchBarController.searchBar.placeholder = Constants.searchPlaceHolder
         searchBarController.searchBar.isAccessibilityElement = true
-        searchBarController.searchBar.accessibilityIdentifier = "search-bar"
+        searchBarController.searchBar.accessibilityTraits = .searchField
+        searchBarController.searchBar.accessibilityIdentifier = "search_bar"
         searchBarController.searchBar.delegate = self
+        self.navigationItem.searchController = searchBarController
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -121,21 +121,13 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.nibName, for: indexPath) as! ImageCollectionViewCell
-        cell.imageView.image = nil
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? ImageCollectionViewCell else {
-            return
-        }
-        
         let model = viewModel.photoArray[indexPath.row]
         cell.model = ImageModel.init(withPhotos: model)
         
         if indexPath.row == (viewModel.photoArray.count - 10) {
             loadNextPage()
         }
+        return cell
     }
 }
 

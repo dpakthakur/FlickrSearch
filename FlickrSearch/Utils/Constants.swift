@@ -36,4 +36,5 @@ class Constants: NSObject {
     }
     
     static let defaultColumnCount: CGFloat = 2.0
+    static let searchPlaceHolder = "Search Photo category for results"
 }

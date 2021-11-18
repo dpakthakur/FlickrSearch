@@ -22,14 +22,17 @@ class FlickrSearchUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
+    func testSearch() throws {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
-        let searchBarElement = app.descendants(matching: .any).matching(identifier: "search-bar").firstMatch
-        searchBarElement.tap()
-        app.typeText("cat")
-
+        let searchfield = app.navigationBars.children(matching: .searchField).firstMatch
+        let collectionViewField = app.otherElements.children(matching: .collectionView).firstMatch
+        //searchfield.tap()
+        XCTAssertEqual(searchfield.exists, true)
+        XCTAssertEqual(collectionViewField.exists, true)
+        //searchfield.typeText("cat")
+        
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
